@@ -123,3 +123,40 @@
                 parallax.style.transform = `translateY(${scrolled * speed}px) rotate(5deg)`;
             }
         });
+
+
+// Animate progress bars when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate skill bars
+    setTimeout(() => {
+        document.querySelectorAll('.progress-value').forEach(progress => {
+            progress.style.width = progress.getAttribute('data-width');
+        });
+    }, 500);
+    
+    // Scroll animations for skills section
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animate skill bars when in view
+                if (entry.target.classList.contains('skills-card')) {
+                    const skillBars = entry.target.querySelectorAll('.progress-value');
+                    skillBars.forEach(progress => {
+                        progress.style.width = progress.getAttribute('data-width');
+                    });
+                }
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+});
